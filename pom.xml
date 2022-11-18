@@ -12,6 +12,7 @@
 	<groupId>com.SportRentalInventorySystem</groupId>
 	<artifactId>BackEnd</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	 <packaging>jar</packaging>
 	<name>BackEnd</name>
 	<description>Sport Rental and Inventory System</description>
 	<properties>
