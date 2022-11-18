@@ -14,7 +14,7 @@ import com.SportRentalInventorySystem.BackEnd.model.Product;
 import com.SportRentalInventorySystem.BackEnd.repository.CategoryRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.ProductRepository;
 
-@CrossOrigin(origins = "https://sportsrentfrontend.herokuapp.com")
+@CrossOrigin(origins = "*" ) 
 @RestController
 @RequestMapping("/api/public")
 public class PublicController {

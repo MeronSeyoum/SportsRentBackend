@@ -20,7 +20,7 @@ import com.SportRentalInventorySystem.BackEnd.model.User;
 import com.SportRentalInventorySystem.BackEnd.repository.ProductRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 
-@CrossOrigin(origins = "https://sportsrentfrontend.herokuapp.com")
+@CrossOrigin(origins = "*" ) 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

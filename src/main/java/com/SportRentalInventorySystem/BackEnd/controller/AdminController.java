@@ -21,8 +21,9 @@ import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 import com.SportRentalInventorySystem.BackEnd.utility.FileUploadUtil;
 
 
-@CrossOrigin("https://sportsrentfrontend.herokuapp.com")
+
 @RestController
+@CrossOrigin(origins = "*" ) 
 @RequestMapping("/api/admin")
 public class AdminController {
 

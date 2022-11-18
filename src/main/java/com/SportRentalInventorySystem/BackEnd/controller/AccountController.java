@@ -47,6 +47,7 @@ import com.SportRentalInventorySystem.BackEnd.Security.jwt.JwtUtils;
 
 
 @RestController
+@CrossOrigin(origins = "*" ) 
 @RequestMapping("/api/account")
 public class AccountController {
     @Autowired
