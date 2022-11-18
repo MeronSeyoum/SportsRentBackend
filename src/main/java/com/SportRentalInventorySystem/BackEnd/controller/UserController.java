@@ -31,27 +31,6 @@ public class UserController {
     private ProductRepository productRepository;
     
    
-
-    
- // build update user REST API
-    @PutMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> updateUser(@PathVariable long id,@RequestBody User userDetails) {
-        User updateUser = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id: " + id));
-
-                updateUser.setFirstName(userDetails.getFirstName());
-                updateUser.setLastName(userDetails.getLastName());
-                updateUser.setEmail(userDetails.getEmail());
-                updateUser.setPhoneNumber(userDetails.getPhoneNumber());
-                updateUser.setUsername(userDetails.getUsername());
-                updateUser.setPassword(userDetails.getPassword());
-        
-                userRepository.save(updateUser);
-        
-                return ResponseEntity.ok(updateUser);
-    }
-    
     @GetMapping("/user")
     @PreAuthorize("hasRole('ADMIN')")
     public  List<User> getUser(){
@@ -68,5 +47,16 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public String adminAccess() {
         return "Admin Dash Board.";
+    }
+    
+    
+//    Retrieve User profile data
+    @GetMapping("/getUserProfileById/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_MODERATOR')")
+    public ResponseEntity<User> getProfile(@PathVariable long id) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));
+        return ResponseEntity.ok(user);
     }
 }

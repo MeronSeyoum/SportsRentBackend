@@ -20,10 +20,8 @@ import com.SportRentalInventorySystem.BackEnd.repository.ProductRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 import com.SportRentalInventorySystem.BackEnd.utility.FileUploadUtil;
 
-
-
 @RestController
-@CrossOrigin(origins = "*" ) 
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/admin")
 public class AdminController {
 
@@ -106,7 +104,7 @@ public class AdminController {
 //      return new ResponseEntity<>(userRepository.searchByUserName(keyWords), HttpStatus.OK);
 //  }
 //    
-    
+
     /**
      * Product information managed by admin. manager CRUD operation is done here
      * 
@@ -144,7 +142,6 @@ public class AdminController {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    
     // delete Product REST API
     @DeleteMapping("/deleteProduct/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -157,7 +154,7 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
- // build update Product REST API
+    // build update Product REST API
     @PutMapping("/productUpdate/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable long id, @RequestBody Product productInfo) {
@@ -178,8 +175,6 @@ public class AdminController {
         return ResponseEntity.ok(updateProduct);
     }
 
-
-    
 //    Product search 
     @GetMapping("/searchProduct/{keyWords}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -215,9 +210,9 @@ public class AdminController {
     @PostMapping("/createCategory")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> createCategory(@RequestBody Category categoryDetails) {
-     
+
         Category category = categoryRepository.save(categoryDetails);
-        
+
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
 
@@ -243,18 +238,16 @@ public class AdminController {
         updateCategory.setCategory_Image(categoryInfo.getCategory_Image());
         updateCategory.setCategory_Name(categoryInfo.getCategory_Name());
         updateCategory.setSeason(categoryInfo.getSeason());
-        
+
         categoryRepository.save(updateCategory);
         return ResponseEntity.ok(updateCategory);
     }
 
-    
 //  Product search 
-  @GetMapping("/searchcategory/{keyWords}")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public ResponseEntity<?> searchCategory(@PathVariable String keyWords) {
-      return new ResponseEntity<>(categoryRepository.searchByCatName(keyWords), HttpStatus.OK);
-  }
+    @GetMapping("/searchcategory/{keyWords}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> searchCategory(@PathVariable String keyWords) {
+        return new ResponseEntity<>(categoryRepository.searchByCatName(keyWords), HttpStatus.OK);
+    }
 
-    
 }
