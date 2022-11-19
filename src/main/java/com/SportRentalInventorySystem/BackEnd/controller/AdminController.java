@@ -2,6 +2,7 @@ package com.SportRentalInventorySystem.BackEnd.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.SportRentalInventorySystem.BackEnd.ExceptionHandler.ResourceNotFoundException;
 import com.SportRentalInventorySystem.BackEnd.model.Category;
 import com.SportRentalInventorySystem.BackEnd.model.Product;
+import com.SportRentalInventorySystem.BackEnd.model.ProductList;
 import com.SportRentalInventorySystem.BackEnd.model.User;
 import com.SportRentalInventorySystem.BackEnd.repository.CategoryRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.ProductRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
+import com.SportRentalInventorySystem.BackEnd.repository.productListRepository;
 import com.SportRentalInventorySystem.BackEnd.utility.FileUploadUtil;
 
 @RestController
@@ -29,10 +32,13 @@ public class AdminController {
     private UserRepository userRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private ProductRepository productRepository;
+
+//    @Autowired
+//    private ProductList productListRepository;
 
     /**
      * User account information managed by admin. manager CRUD operation is done
@@ -42,14 +48,25 @@ public class AdminController {
      * @return
      */
 
-    // build create user REST API
+    /**
+     * build create user REST API
+     * 
+     * @param user
+     * @return
+     */
     @PostMapping("/createUser")
     @PreAuthorize("hasRole('ADMIN')")
     public User createUser(@RequestBody User user) {
         return userRepository.save(user);
     }
 
-// build update user REST API
+    /**
+     * build update user REST API
+     * 
+     * @param id
+     * @param userDetails
+     * @return
+     */
     @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User userDetails) {
@@ -67,14 +84,23 @@ public class AdminController {
         return ResponseEntity.ok(updateUser);
     }
 
-    // Retrieve User information and send to client
+    /**
+     * Retrieve User information and send to client
+     * 
+     * @return
+     */
     @GetMapping("/user")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllUsers() {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
-    // build get user by id REST API
+    /**
+     * build get user by id REST API
+     * 
+     * @param id
+     * @return
+     */
     @GetMapping("/userById/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUser(@PathVariable long id) {
@@ -84,7 +110,12 @@ public class AdminController {
         return ResponseEntity.ok(user);
     }
 
-    // delete user REST API
+    /**
+     * delete user REST API
+     * 
+     * @param id
+     * @return
+     */
     @DeleteMapping("/deleteUser/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable long id) {
@@ -119,7 +150,13 @@ public class AdminController {
         return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
     }
 
-    // build get user by id REST API
+    /**
+     * build get user by id REST API
+     * 
+     * @param id
+     * @return
+     */
+
     @GetMapping("/productById/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Product> getProduct(@PathVariable long id) {
@@ -129,20 +166,41 @@ public class AdminController {
         return ResponseEntity.ok(product);
     }
 
-    // build create user REST API
+    /**
+     * build create user REST API
+     * 
+     * @param id
+     * @param productDetails
+     * @return
+     * @throws RuntimeException
+     */
     @PostMapping("/createProduct/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> createProduct(@PathVariable long id, @RequestBody Product productDetails) {
+    public ResponseEntity<Product> createProduct(@PathVariable long id, @RequestBody Product productDetails)
+            throws RuntimeException {
+//Insert Product if category exist;
 
         Product product = categoryRepository.findById(id).map(category -> {
             productDetails.setCategory(category);
-            return productRepository.save(productDetails);
+
+            List<Product> products = productRepository.findByProductName(productDetails.getProduct_Name());
+            if (products.isEmpty()) {
+                return productRepository.save(productDetails);
+                // save the product data
+            }
+            return productDetails;
+
         }).orElseThrow(() -> new RuntimeException("create Product fail "));
 
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    // delete Product REST API
+    /**
+     * delete Product REST API
+     * 
+     * @param id
+     * @return
+     */
     @DeleteMapping("/deleteProduct/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpStatus> deleteProduct(@PathVariable long id) {
@@ -154,7 +212,13 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // build update Product REST API
+    /**
+     * build update Product REST API
+     * 
+     * @param id
+     * @param productInfo
+     * @return
+     */
     @PutMapping("/productUpdate/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable long id, @RequestBody Product productInfo) {
@@ -175,7 +239,12 @@ public class AdminController {
         return ResponseEntity.ok(updateProduct);
     }
 
-//    Product search 
+    /**
+     * Product search
+     * 
+     * @param keyWords
+     * @return
+     */
     @GetMapping("/searchProduct/{keyWords}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> SearchProdut(@PathVariable String keyWords) {
@@ -185,18 +254,21 @@ public class AdminController {
     /**
      * Category information managed by admin. manager CRUD operation is done here
      * 
-     * @param Product
      * @return
      */
 
-    // Retrieve Category information and send to client
     @GetMapping("/categories")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getCategories() {
         return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
     }
 
-    // build get Category by id REST API
+    /**
+     * build get Category by id REST API
+     * 
+     * @param id
+     * @return
+     */
     @GetMapping("/categoryById/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Category> getCategory(@PathVariable long id) {
@@ -206,7 +278,12 @@ public class AdminController {
         return ResponseEntity.ok(category);
     }
 
-    // build create Category REST API
+    /**
+     * build create Category REST API
+     * 
+     * @param categoryDetails
+     * @return
+     */
     @PostMapping("/createCategory")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> createCategory(@RequestBody Category categoryDetails) {
@@ -216,7 +293,12 @@ public class AdminController {
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
 
-    // delete PRoduct REST API
+    /**
+     * delete PRoduct REST API
+     * 
+     * @param id
+     * @return
+     */
     @DeleteMapping("/deleteCategory/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpStatus> deleteCategory(@PathVariable long id) {
@@ -227,7 +309,14 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // build update Product REST API
+    /**
+     * build update Product REST API
+     * 
+     * @param id
+     * @param categoryInfo
+     * @return
+     */
+
     @PutMapping("/categoryUpdate")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Category> updateCategory(@PathVariable long id, @RequestBody Category categoryInfo) {
@@ -243,7 +332,13 @@ public class AdminController {
         return ResponseEntity.ok(updateCategory);
     }
 
-//  Product search 
+    /**
+     * Product search
+     * 
+     * @param keyWords
+     * @return
+     */
+
     @GetMapping("/searchcategory/{keyWords}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> searchCategory(@PathVariable String keyWords) {
