@@ -1,12 +1,10 @@
 /**
-* *
-*
 * @author  Meron seyoum
 * @version 1.0
 * @since   2022-09-24
+* 
 */
 package com.SportRentalInventorySystem.BackEnd.repository;
-
 
 import java.util.Optional;
 
