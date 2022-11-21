@@ -69,11 +69,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/resources/**",  "/error", "/api/account/**" ,"/api/payment/**").permitAll()  
             .antMatchers("/api/public/**").permitAll()         
             //ManagerController will access admin content
-            .antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+            .antMatchers("/api/product", "/api/category","/api/Customer").hasAuthority("ROLE_ADMIN")
             //StaffController will access Staff content
             .antMatchers("/api/staff/*").hasAuthority("ROLE_MODERATOR")
             //UserController will access logged in users content
-            .antMatchers("/api/user/*").hasAuthority("ROLE_USER")
+            .antMatchers("/api/users/*").hasAuthority("ROLE_USER")
             .anyRequest().authenticated() 
             .and() 
             .rememberMe().userDetailsService(this.userDetailsService)

@@ -26,27 +26,12 @@ import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    
-    @Autowired
-    private ProductRepository productRepository;
-    
+     
    
     @GetMapping("/user")
     @PreAuthorize("hasRole('ADMIN')")
     public  List<User> getUser(){
         return userRepository.findAll();
-    }
-
-    @GetMapping("/mod")
-    @PreAuthorize("hasRole('MODERATOR')")
-    public String moderatorAccess() {
-        return "Moderator Dash Board.";
-    }
-
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminAccess() {
-        return "Admin Dash Board.";
     }
     
     

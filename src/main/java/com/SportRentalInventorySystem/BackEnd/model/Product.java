@@ -1,7 +1,7 @@
 package com.SportRentalInventorySystem.BackEnd.model;
 
 import java.io.Serializable;
-
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -24,10 +24,6 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
 
-   
-    @Column(name = "serial_number")
-    private String serial_Number; 
-    
     @Column(name = "price")
     private double price; 
     
@@ -44,20 +40,26 @@ public class Product implements Serializable {
      @Column(name = "productImage")
      @Lob
      private String product_Image;
+     
+     
+     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER,
+             cascade = CascadeType.ALL)
+     private Set<ProductList> productList;
+     
 
     public Product() {
          
      }
      
  
-    public Product(long id, int type, String product_Name, String description, String serial_Number, double price,
+    public Product(long id, int type, String product_Name, String description, double price,
             double quantity, String product_status, Category category, String product_Image) {
         super();
         this.id = id;
         this.type = type;
         this.product_Name = product_Name;
         this.description = description;
-        this.serial_Number = serial_Number;
+      
         this.price = price;
         this.quantity = quantity;
         this.product_status = product_status;
@@ -113,14 +115,6 @@ public class Product implements Serializable {
         this.product_status = product_status;
     }
 
-    public String getSerial_Number() {
-        return serial_Number;
-    }
-
-    public void setSerial_Number(String serial_Number) {
-        this.serial_Number = serial_Number;
-    }
-
     public double getPrice() {
         return price;
     }
@@ -149,7 +143,7 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "Product [id=" + id + ", type=" + type + ", product_Name=" + product_Name + ", description=" + description
-                + ", serial_Number=" + serial_Number + ", price=" + price + ", quantity=" + quantity + ", product_status="
+                + ", price=" + price + ", quantity=" + quantity + ", product_status="
                 + product_status + ", category=" + category + ", product_Image=" + product_Image + "]";
     }
     
