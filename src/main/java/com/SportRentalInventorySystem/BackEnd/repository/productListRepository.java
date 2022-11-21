@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+
 import com.SportRentalInventorySystem.BackEnd.model.ProductList;
 
-@Repository
+
 public interface ProductListRepository extends JpaRepository<ProductList, Long> {
     
     //get product data using product id
