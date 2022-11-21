@@ -1,6 +1,5 @@
 package com.SportRentalInventorySystem.BackEnd.Payload.Request;
 
-import javax.persistence.Column;
 import javax.validation.constraints.*;
 
 import java.util.Set;

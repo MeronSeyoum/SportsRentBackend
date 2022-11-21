@@ -16,7 +16,7 @@ public class Product implements Serializable {
     private long id;
     
     @Column(name = "type")
-    private int type;
+    private String type;
     
     @Column(name = "product_name")
     private String product_Name;
@@ -52,7 +52,7 @@ public class Product implements Serializable {
      }
      
  
-    public Product(long id, int type, String product_Name, String description, double price,
+    public Product(long id, String type, String product_Name, String description, double price,
             double quantity, String product_status, Category category, String product_Image) {
         super();
         this.id = id;
@@ -79,11 +79,11 @@ public class Product implements Serializable {
         return product_Name;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 

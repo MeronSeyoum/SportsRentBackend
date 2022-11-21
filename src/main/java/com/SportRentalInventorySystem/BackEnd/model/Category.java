@@ -16,7 +16,7 @@ public class Category implements Serializable {
     private long category_id;
     
     @Column(name = "category_No")
-    private int category_No;  
+    private String category_No;  
  
     @Column(name = "category_name")
     private String category_Name;  
@@ -37,7 +37,7 @@ public class Category implements Serializable {
        
 //    getter and setters for category
     
-    public Category(long category_id, int category_No, String category_Name, String season, LocalDate category_StampDate,
+    public Category(long category_id, String category_No, String category_Name, String season, LocalDate category_StampDate,
             String category_Image) {
         super();
         this.category_id = category_id;
@@ -50,7 +50,7 @@ public class Category implements Serializable {
 
 
 
-    public int getCategory_No() {
+    public String getCategory_No() {
         return category_No;
     }
 
@@ -62,7 +62,7 @@ public class Category implements Serializable {
         this.category_id = category_id;
     }
 
-    public void setCategory_No(int category_No) {
+    public void setCategory_No(String category_No) {
         this.category_No = category_No;
     }
 

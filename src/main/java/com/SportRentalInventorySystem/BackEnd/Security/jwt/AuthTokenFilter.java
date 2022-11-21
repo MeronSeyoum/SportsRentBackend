@@ -20,20 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.SportRentalInventorySystem.BackEnd.Security.services.UserDetailsServiceImpl;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
