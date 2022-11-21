@@ -9,13 +9,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.SportRentalInventorySystem.BackEnd.ExceptionHandler.ResourceNotFoundException;
-import com.SportRentalInventorySystem.BackEnd.model.Category;
-import com.SportRentalInventorySystem.BackEnd.model.Product;
-import com.SportRentalInventorySystem.BackEnd.model.ProductList;
+
 import com.SportRentalInventorySystem.BackEnd.model.User;
-import com.SportRentalInventorySystem.BackEnd.repository.CategoryRepository;
-import com.SportRentalInventorySystem.BackEnd.repository.ProductListRepository;
-import com.SportRentalInventorySystem.BackEnd.repository.ProductRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 
 @RestController
@@ -26,8 +21,6 @@ public class CustomerController {
     @Autowired
     private UserRepository userRepository;
 
-   
-    Category categoryNo;
 
     /**
      * User account information managed by admin. manager CRUD operation is done

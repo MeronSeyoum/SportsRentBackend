@@ -37,7 +37,7 @@ public class ProductController {
 
     @Autowired
     private ProductListRepository productListRepository;
-    
+
     Category categoryNo;
 
     /**
@@ -87,7 +87,7 @@ public class ProductController {
      * @return
      * @throws RuntimeException
      */
- 
+
     @PostMapping("/createProduct/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> createProduct(@PathVariable long id, @RequestBody Product productDetails)
@@ -96,7 +96,7 @@ public class ProductController {
         Product lastInsertedProduct = null;
         long productId = 0;
         String serialNumberCode = "";
-       
+
         // String pro_Desc= "";
         // Insert Product if category exist;
         Product product = categoryRepository.findById(id).map(category -> {
@@ -120,14 +120,12 @@ public class ProductController {
 
         // current insert object(row) primary id
         productId = product.getId();
-//        pro_Desc  =  product.getDescription();
-
-        // get the object from table using id
+        // get the product row as object from table using id
         lastInsertedProduct = getProductId(productId);
 
         for (int itemNo = 1; itemNo <= lastInsertedProduct.getQuantity(); itemNo++) {
 
-            serialNumberCode = categoryNo.getCategory_No()  + "-" + lastInsertedProduct.getType() + "-" + itemNo;
+            serialNumberCode = categoryNo.getCategory_No() + "-" + lastInsertedProduct.getType() + "-" + itemNo;
 
             ProductList productList = new ProductList(lastInsertedProduct, lastInsertedProduct.getProduct_status(),
                     lastInsertedProduct.getDescription(),
@@ -138,8 +136,6 @@ public class ProductController {
 
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
-
-
 
     /**
      * build update Product REST API
@@ -161,7 +157,6 @@ public class ProductController {
         updateProduct.setProduct_status(productInfo.getProduct_status());
         updateProduct.setProduct_Name(productInfo.getProduct_Name());
         updateProduct.setQuantity(productInfo.getQuantity());
-//        updateProduct.setSerial_Number(productInfo.getSerial_Number());
         updateProduct.setType(productInfo.getType());
 
         productRepository.save(updateProduct);
@@ -184,7 +179,7 @@ public class ProductController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
+
     /**
      * Product search
      * 
@@ -196,16 +191,17 @@ public class ProductController {
     public ResponseEntity<?> SearchProdut(@PathVariable String keyWords) {
         return new ResponseEntity<>(productRepository.searchByProName(keyWords), HttpStatus.OK);
     }
-    
+
     /**
      * Get productList data
+     * 
      * @return
      */
     @GetMapping("/productListById/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllProductList(@PathVariable long id) {
-        
-       return new ResponseEntity<> (productListRepository.findByProductListId(id), HttpStatus.OK);
+
+        return new ResponseEntity<>(productListRepository.findByProductListId(id), HttpStatus.OK);
     }
 
 }
