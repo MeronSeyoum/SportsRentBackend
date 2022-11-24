@@ -40,7 +40,7 @@ public class PublicController {
     // Retrieve Product information and send to client
     @GetMapping("/TopSaleProduct")
     public ResponseEntity<?> getAllProduct() {
-        return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(productRepository.findByTopSale(), HttpStatus.OK);
     }
  
     @GetMapping("/category")
