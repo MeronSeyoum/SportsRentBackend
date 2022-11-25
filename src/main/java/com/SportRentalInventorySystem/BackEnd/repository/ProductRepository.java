@@ -23,8 +23,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
    public List<Product> findByProductName(String product_Name);
     
     
-  //get product data with most featured 
-      @Query("select * from Product p1 left join Product p2 on p1.category = p2.category and p1.id < p2.id where p2.id is null")
-     public List<Product> findByTopSale();
-      
+    //get product data with most featured 
+       @Query(nativeQuery = true, value ="select p1.* from Product p1 left join Product p2 on p1.category = p2.category and p1.id < p2.id where p2.id is null")
+       public List<Product> findByTopSale();
+    
+    
 }

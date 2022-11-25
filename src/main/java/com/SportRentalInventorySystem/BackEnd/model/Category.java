@@ -2,6 +2,8 @@ package com.SportRentalInventorySystem.BackEnd.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,6 +28,11 @@ public class Category implements Serializable {
     
     @Column(name = "category_stamp")
     private LocalDate category_StampDate;
+    
+//    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER,
+//            cascade = CascadeType.ALL)
+//    private Set<Product> product;
+    
     
     @Column(name = "categroyImage")
     @Lob
@@ -98,6 +105,16 @@ public class Category implements Serializable {
     public void setCategory_Image(String category_Image) {
         this.category_Image = category_Image;
     }
+    
+    
+
+//    public Set<Product> getProduct() {
+//        return product;
+//    }
+//
+//    public void setProduct(Set<Product> product) {
+//        this.product = product;
+//    }
 
     @Override
     public String toString() {
