@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.SportRentalInventorySystem.BackEnd.ExceptionHandler.ResourceNotFoundException;
 
 import com.SportRentalInventorySystem.BackEnd.model.User;
+import com.SportRentalInventorySystem.BackEnd.model.UserAddress;
+import com.SportRentalInventorySystem.BackEnd.repository.UserAddressRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 
 @RestController
@@ -19,7 +21,9 @@ public class CustomerController {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private UserAddressRepository userAddressRepository;
+    
 
     /**
      * User account information managed by admin. manager CRUD operation is done
@@ -43,17 +47,23 @@ public class CustomerController {
      * @return
      */
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User userDetails) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_MODERATOR')")
+    public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User userDetails ) {
         User updateUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id: " + id));
         updateUser.setFirstName(userDetails.getFirstName());
         updateUser.setLastName(userDetails.getLastName());
-        updateUser.setEmail(userDetails.getEmail());
         updateUser.setPhoneNumber(userDetails.getPhoneNumber());
-        updateUser.setUsername(userDetails.getUsername());
-        // updateUser.setPassword(userDetails.getPassword());
+       
+         UserAddress userAddress =new UserAddress();
+     // Set child reference(userAddress) in parent entity(user)
+        updateUser.setUserAddress(userAddress);
 
+        // Set parent reference(user) in child entity(userAddress)
+        userAddress.setUser(updateUser);
+
+        // Save Parent Reference (which will save the child as well)
+        
         userRepository.save(updateUser);
 
         return ResponseEntity.ok(updateUser);
@@ -77,8 +87,8 @@ public class CustomerController {
      * @return
      */
     @GetMapping("/userById/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> getUser(@PathVariable long id) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_MODERATOR')")
+     public ResponseEntity<User> getUser(@PathVariable long id) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id:" + id));

@@ -9,9 +9,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "category")
 public class Category implements Serializable {
+   
     private static final long serialVersionUID = 1L;
-    
-    
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name = "category_id", unique = true, nullable = false)
@@ -29,11 +29,6 @@ public class Category implements Serializable {
     @Column(name = "category_stamp")
     private LocalDate category_StampDate;
     
-//    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER,
-//            cascade = CascadeType.ALL)
-//    private Set<Product> product;
-    
-    
     @Column(name = "categroyImage")
     @Lob
     private String category_Image;
@@ -43,8 +38,7 @@ public class Category implements Serializable {
     }
        
 //    getter and setters for category
-    
-    public Category(long category_id, String category_No, String category_Name, String season, LocalDate category_StampDate,
+        public Category(long category_id, String category_No, String category_Name, String season, LocalDate category_StampDate,
             String category_Image) {
         super();
         this.category_id = category_id;
@@ -54,8 +48,6 @@ public class Category implements Serializable {
         this.category_StampDate = category_StampDate;
         this.category_Image = category_Image;
     }
-
-
 
     public String getCategory_No() {
         return category_No;
@@ -105,16 +97,6 @@ public class Category implements Serializable {
     public void setCategory_Image(String category_Image) {
         this.category_Image = category_Image;
     }
-    
-    
-
-//    public Set<Product> getProduct() {
-//        return product;
-//    }
-//
-//    public void setProduct(Set<Product> product) {
-//        this.product = product;
-//    }
 
     @Override
     public String toString() {

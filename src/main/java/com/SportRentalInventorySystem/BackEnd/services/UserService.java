@@ -2,23 +2,31 @@ package com.SportRentalInventorySystem.BackEnd.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 import com.SportRentalInventorySystem.BackEnd.ExceptionHandler.ResourceNotFoundException;
 import com.SportRentalInventorySystem.BackEnd.model.User;
 
+@Service
 public class UserService {
+    
     @Autowired
-    private UserRepository userRepository;
-     
- 
+    public UserRepository userRepository;
+    
+    public UserService(UserRepository userRepository){
+        this.userRepository =userRepository;
+    }
+    
+    @SuppressWarnings("unused")
     public void updateResetPasswordToken(String token, String email) throws ResourceNotFoundException {
-        User    user = userRepository.findByEmail(email);
-        if (user != null) {
+        
+        User user = userRepository.findByEmail(email);
+       if (user != null) {
             user.setResetPasswordToken(token);
             userRepository.save(user);
         } else {
-            throw new ResourceNotFoundException("Could not find any customer with the email " + email);
+            throw new ResourceNotFoundException("Could not find any customer with the email " + user.getEmail());
         }
     }
      
@@ -30,8 +38,9 @@ public class UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
-         
+        
         user.setResetPasswordToken(null);
-        userRepository.save(user);
+        userRepository.save(user); 
+      
     }
 }

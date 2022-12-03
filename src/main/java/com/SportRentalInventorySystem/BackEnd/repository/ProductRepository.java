@@ -27,5 +27,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
        @Query(nativeQuery = true, value ="select p1.* from Product p1 left join Product p2 on p1.category = p2.category and p1.id < p2.id where p2.id is null")
        public List<Product> findByTopSale();
     
+
+   //  Get all product to be search by front end
+       @Query(nativeQuery = true, value = "SELECT * FROM product p LEFT JOIN category c ON c.category_id = p.category")
+       public List<ProductProjection> ProductSearch();
     
 }

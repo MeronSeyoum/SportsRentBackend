@@ -8,6 +8,7 @@ package com.SportRentalInventorySystem.BackEnd.controller;
 * @since   2022-09-24
 */
 
+import com.SportRentalInventorySystem.BackEnd.ExceptionHandler.ResourceNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +32,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.mail.javamail.JavaMailSender;
 import com.SportRentalInventorySystem.BackEnd.Payload.Request.ForgetPasswordRequest;
 import com.SportRentalInventorySystem.BackEnd.Payload.Request.LoginRequest;
+import com.SportRentalInventorySystem.BackEnd.Payload.Request.NewPasswordRequest;
 import com.SportRentalInventorySystem.BackEnd.Payload.Request.SignupRequest;
 import com.SportRentalInventorySystem.BackEnd.Payload.Response.JwtResponse;
 import com.SportRentalInventorySystem.BackEnd.Payload.Response.MessageResponse;
@@ -41,12 +43,19 @@ import com.SportRentalInventorySystem.BackEnd.Security.services.UserDetailsImpl;
 import com.SportRentalInventorySystem.BackEnd.model.ERole;
 import com.SportRentalInventorySystem.BackEnd.model.Role;
 import com.SportRentalInventorySystem.BackEnd.model.User;
+import com.SportRentalInventorySystem.BackEnd.model.UserAddress;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
+import com.SportRentalInventorySystem.BackEnd.repository.UserAddressRepository;
 
 import net.bytebuddy.utility.RandomString;
 
 import com.SportRentalInventorySystem.BackEnd.repository.RoleRepository;
 import com.SportRentalInventorySystem.BackEnd.Security.jwt.JwtUtils;
+import com.SportRentalInventorySystem.BackEnd.services.UserService;
+import java.io.UnsupportedEncodingException;
+import javax.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.ui.Model;
 
 //if user does't have account and has a unique Username and email the method will register the user 
 // depending on the role the default ROLE is USER but if the Account is created by Manager it may have an ROLE_ADMIN OR ROLE_MODERATOR roles
@@ -65,10 +74,17 @@ public class AccountController {
     private RoleRepository roleRepository;
 
     @Autowired
+    private UserAddressRepository userAddressRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
     private JwtUtils jwtUtils;
+    
+    @Autowired
+    private JavaMailSender mailSender;
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -79,6 +95,7 @@ public class AccountController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
+        
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
@@ -106,9 +123,10 @@ public class AccountController {
         }
 
         // Create new user's account
+        String status = "Active";
         User user = new User(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(),
                 signUpRequest.getPhoneNumber(), signUpRequest.getUsername(),
-                encoder.encode(signUpRequest.getPassword()), signUpRequest.getStatus());
+                encoder.encode(signUpRequest.getPassword()), status);
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -142,12 +160,17 @@ public class AccountController {
 
         user.setRoles(roles);
         userRepository.save(user);
+        
+//        UserAddress userAddress = new UserAddress(user.getId());
+//        
+//        userAddressRepository.save(userAddress);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
-
+    
+    
     @PostMapping("/forgotPassword")
-    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgetPasswordRequest forgetPasswordRequest) {
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgetPasswordRequest forgetPasswordRequest, Model model) {
         User emailfound = null;
 //        check if email exist in database
         
@@ -158,12 +181,75 @@ public class AccountController {
             }
             
                 // if email exist generate token and retrieve the email i n db
+                
                  emailfound = userRepository.findByEmail(forgetPasswordRequest.getEmail());
-
+                 
                 String token = RandomString.make(30);
+                String email = forgetPasswordRequest.getEmail();
+                UserService userService = new UserService(userRepository);
             
+                try {
+        userService.updateResetPasswordToken(token, email);
+        String resetPasswordLink = "http://localhost:3000/ForgotPassword/" + token;
+        
+        sendEmail(email, resetPasswordLink);
+        //model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
+         
+    } catch (ResourceNotFoundException | UnsupportedEncodingException | MessagingException ex) {
+        return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse(ex.getMessage()));
+    }
            
         return ResponseEntity.ok(new MessageResponse(emailfound.getEmail()));
+    }
+    
+    @PostMapping("/forgotPassword/token")
+    public ResponseEntity<?> forgotPasswordToken(@Valid @RequestBody NewPasswordRequest newPasswordRequest, Model model) {
+        User accountfound = null;
+        UserService userService = new UserService(userRepository);
+        //accountfound = userService.getByResetPasswordToken(newPasswordRequest.getToken());
+        accountfound = userService.getByResetPasswordToken(newPasswordRequest.getToken());
+        if(accountfound == null){
+            return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: The Token does not exist"));
+        }
+        
+        userService.updatePassword(accountfound, newPasswordRequest.getPassword());
+        return ResponseEntity.ok(new MessageResponse(accountfound.getEmail()));
+    }
+
+    /**
+     * send email with a link to a user to change password
+     * @param recipientEmail
+     * @param link
+     * @throws MessagingException
+     * @throws UnsupportedEncodingException
+     */
+    private void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();              
+    MimeMessageHelper helper = new MimeMessageHelper(message);
+     
+    helper.setFrom("sportsrentReset@gmail.com", "Sportrent Support");
+    
+    helper.setTo(recipientEmail);
+    
+    String subject = "Here's the link to reset your password";
+     
+    String content = "<p>Hello,</p>"
+            + "<p>You have requested to reset your password.</p>"
+            + "<p>Click the link below to change your password:</p>"
+            + "<p><a href=\"" + link + "\">Change my password</a></p>"
+            + "<br>"
+            + "<p>Ignore this email if you do remember your password, "
+            + "or you have not made the request.</p>";
+     
+    helper.setSubject(subject);
+     
+    helper.setText(content, true);
+     
+    mailSender.send(message);
     }
 
 }

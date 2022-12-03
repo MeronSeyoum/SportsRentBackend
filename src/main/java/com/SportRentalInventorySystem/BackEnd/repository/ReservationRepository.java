@@ -1,9 +1,16 @@
 package com.SportRentalInventorySystem.BackEnd.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.SportRentalInventorySystem.BackEnd.model.ReservationProjection;
 import com.SportRentalInventorySystem.BackEnd.model.Reservation;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 
+    
+    @Query(nativeQuery = true, value = "SELECT * FROM reserved r inner join users u on r.user=u.id where r.user =:user")
+    public List<ReservationProjection> pickupInfo(long user);
 }

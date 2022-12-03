@@ -8,6 +8,9 @@ public class LoginRequest {
 
 	@NotBlank
 	private String password;
+	
+	private String Status;
+
 
 	public String getUsername() {
 		return username;
@@ -24,4 +27,15 @@ public class LoginRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+	
+	
+
 }

@@ -11,42 +11,40 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "reserved")
 public class Reservation {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "reserve_id")
+    private Long reserve_id;
 
-    @Column(name = "total_price")
-    private Double totalPrice;
-
-    @Column(name = "date")
-    private LocalDate date;
-
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
+    @ManyToOne
+    @JoinColumn(name="user")
+    private User user;
+  
+     @Column(name = "address")
+    private String address;
+     
     @Column(name = "city")
     private String city;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
     
+    @Column(name = "province")
+    private String province;
+    
+    @Column(name = "country")
+    private String country;
+   
+    @Column(name = "zip")
+    private String zip;
+ 
     @Column(name = "duration")
     private Integer duration;
     
@@ -55,21 +53,33 @@ public class Reservation {
     
     @Column(name = "endDate")
     private LocalDate endDate;
+    
+    @Column(name = "total_price")
+    private Double totalPrice;
 
+    @Column(name = "date_Stamp_Date")
+    private LocalDate date_Stamp_Date;
+
+    @Column(name = "payment_Option")
+    private String payment_Option;
+
+    @Column(name = "reservation_Status")
+    private String reservation_Status;
+    
     @OneToMany(fetch = FetchType.EAGER)
     private List<ReservedItem> reservedItem;
 
     public Reservation() {
-        this.date = LocalDate.now();
+        this.date_Stamp_Date = LocalDate.now();
         this.reservedItem = new ArrayList<>();
     }
 
-    public Long getId() {
-        return id;
+    public Long getReserve_id() {
+        return reserve_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setReserve_id(Long reserve_id) {
+        this.reserve_id = reserve_id;
     }
 
     public Double getTotalPrice() {
@@ -80,28 +90,12 @@ public class Reservation {
         this.totalPrice = totalPrice;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getDate_Stamp_Date() {
+        return date_Stamp_Date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDate_Stamp_Date(LocalDate date_Stamp_Date) {
+        this.date_Stamp_Date = date_Stamp_Date;
     }
 
     public String getCity() {
@@ -120,20 +114,52 @@ public class Reservation {
         this.address = address;
     }
 
-    public String getEmail() {
-        return email;
+    public String getProvince() {
+        return province;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getCountry() {
+        return country;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getPayment_Option() {
+        return payment_Option;
+    }
+
+    public void setPayment_Option(String payment_Option) {
+        this.payment_Option = payment_Option;
+    }
+
+    public String getReservation_Status() {
+        return reservation_Status;
+    }
+
+    public void setReservation_Status(String reservation_Status) {
+        this.reservation_Status = reservation_Status;
+    }
+
+    public List<ReservedItem> getReservedItem() {
+        return reservedItem;
+    }
+
+    public void setReservedItem(List<ReservedItem> reservedItem) {
+        this.reservedItem = reservedItem;
     }
 
     public Integer getDuration() {
@@ -168,6 +194,14 @@ public class Reservation {
         this.reservedItem = reservedItem;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -175,11 +209,11 @@ public class Reservation {
         if (o == null || getClass() != o.getClass())
             return false;
         Reservation reserve = (Reservation) o;
-        return Objects.equals(id, reserve.id);
+        return Objects.equals(reserve_id, reserve.reserve_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(reserve_id);
     }
 }

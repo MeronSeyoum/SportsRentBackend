@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .authorizeRequests()
             //These are public paths everyone has access to this path
-            .antMatchers("/resources/**",  "/error", "/api/account/**" ,"/api/payment/**").permitAll()  
+            .antMatchers("/resources/**",  "/error", "/api/account/**" ,"/api/payment/**","/api/Reservation/**").permitAll()  
             .antMatchers("/api/public/**").permitAll()         
             //ManagerController will access admin content
             .antMatchers("/api/product", "/api/category","/api/Customer").hasAuthority("ROLE_ADMIN")
