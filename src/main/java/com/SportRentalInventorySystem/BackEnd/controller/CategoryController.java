@@ -62,7 +62,7 @@ public class CategoryController {
      * @return
      */
     @PostMapping("/createCategory")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Category> createCategory(@RequestBody Category categoryDetails) {
 
         Category category = categoryRepository.save(categoryDetails);
@@ -96,7 +96,7 @@ public class CategoryController {
 
     
 //    Update is not working
-    @PutMapping("/categoryUpdate")
+    @PutMapping("/categoryUpdate/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Category> updateCategory(@PathVariable long id, @RequestBody Category categoryInfo) {
         Category updateCategory = categoryRepository.findById(id)

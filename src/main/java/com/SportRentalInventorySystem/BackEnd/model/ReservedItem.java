@@ -22,51 +22,54 @@ public class ReservedItem {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "rItem_id")
-        private Long rItem_id;
+        private long rItem_id;
         
         @Column(name = "amount")
-        private Long amount;
+        private long amount;
 
         @Column(name = "quantity")
-        private Long quantity;
+        private long quantity;
 
         @ManyToOne(fetch = FetchType.EAGER, optional = false)
         @JoinColumn(name="product_id", nullable = false)
         private Product product ;
       
-//       
-//        @OneToMany(mappedBy = "reserve", fetch = FetchType.EAGER,
-//                cascade = CascadeType.ALL)
-//        private Set<Reservation> reservedItem;
+       
+        @ManyToOne(fetch = FetchType.EAGER, optional = false)
+        @JoinColumn(name="reserve_id", nullable = false)
+        private Reservation reserve ;
+       
+        
+        public ReservedItem() {}
 
-        public ReservedItem(Long amount, Long quantity, Product product) {
+        public ReservedItem(long amount, long quantity, Product product, Reservation reserve) {
             super();
             this.amount = amount;
             this.quantity = quantity;
             this.product = product;
+            this.reserve = reserve;
         }
-
-        public Long getRItem_id() {
+        public long getRItem_id() {
             return rItem_id;
         }
 
-        public void setRItem_id(Long rItem_id) {
+        public void setRItem_id(long rItem_id) {
             this.rItem_id = rItem_id;
         }
 
-        public Long getAmount() {
+        public long getAmount() {
             return amount;
         }
 
-        public void setAmount(Long amount) {
+        public void setAmount(long amount) {
             this.amount = amount;
         }
 
-        public Long getQuantity() {
+        public long getQuantity() {
             return quantity;
         }
 
-        public void setQuantity(Long quantity) {
+        public void setQuantity(long quantity) {
             this.quantity = quantity;
         }
 
@@ -78,13 +81,23 @@ public class ReservedItem {
             this.product = product;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ReservedItem reservedItem = (ReservedItem) o;
-            return Objects.equals(rItem_id, reservedItem.rItem_id);
+       
+
+        public Reservation getReserve() {
+            return reserve;
         }
+
+        public void setReserve(Reservation reserve) {
+            this.reserve= reserve;
+        }
+
+//        @Override
+//        public boolean equals(Object o) {
+//            if (this == o) return true;
+//            if (o == null || getClass() != o.getClass()) return false;
+//            ReservedItem reservedItem = (ReservedItem) o;
+//            return Objects.equals(rItem_id, reservedItem.rItem_id);
+//        }
 
         @Override
         public int hashCode() {

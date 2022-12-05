@@ -84,10 +84,10 @@ public class PublicController {
       System.out.print(updateUser);
 
    // Set child reference(userAddress) in parent entity(user)
-      updateUser.setUserAddress(userAddress);
-
-      // Set parent reference(user) in child entity(userAddress)
-      userAddress.setUser(updateUser);
+//      updateUser.setUserAddress(userAddress);
+//
+//      // Set parent reference(user) in child entity(userAddress)
+//      userAddress.setUser(updateUser);
 
       // Save Parent Reference (which will save the child as well)
       

@@ -1,10 +1,13 @@
 package com.SportRentalInventorySystem.BackEnd.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -58,7 +61,7 @@ public class Reservation {
     private Double totalPrice;
 
     @Column(name = "date_Stamp_Date")
-    private LocalDate date_Stamp_Date;
+    private LocalDateTime date_Stamp_Date;
 
     @Column(name = "payment_Option")
     private String payment_Option;
@@ -66,12 +69,12 @@ public class Reservation {
     @Column(name = "reservation_Status")
     private String reservation_Status;
     
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<ReservedItem> reservedItem;
+   
+    
+
 
     public Reservation() {
-        this.date_Stamp_Date = LocalDate.now();
-        this.reservedItem = new ArrayList<>();
+        this.date_Stamp_Date = LocalDateTime.now();
     }
 
     public Long getReserve_id() {
@@ -90,11 +93,11 @@ public class Reservation {
         this.totalPrice = totalPrice;
     }
 
-    public LocalDate getDate_Stamp_Date() {
+    public LocalDateTime getDate_Stamp_Date() {
         return date_Stamp_Date;
     }
 
-    public void setDate_Stamp_Date(LocalDate date_Stamp_Date) {
+    public void setDate_Stamp_Date(LocalDateTime date_Stamp_Date) {
         this.date_Stamp_Date = date_Stamp_Date;
     }
 
@@ -154,14 +157,6 @@ public class Reservation {
         this.reservation_Status = reservation_Status;
     }
 
-    public List<ReservedItem> getReservedItem() {
-        return reservedItem;
-    }
-
-    public void setReservedItem(List<ReservedItem> reservedItem) {
-        this.reservedItem = reservedItem;
-    }
-
     public Integer getDuration() {
         return duration;
     }
@@ -186,13 +181,7 @@ public class Reservation {
         this.endDate = endDate;
     }
 
-    public List<ReservedItem> getReservedItems() {
-        return reservedItem;
-    }
 
-    public void setReservedItems(List<ReservedItem> reservedItem) {
-        this.reservedItem = reservedItem;
-    }
 
     public User getUser() {
         return user;

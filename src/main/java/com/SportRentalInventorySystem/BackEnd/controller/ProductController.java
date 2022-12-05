@@ -89,7 +89,7 @@ public class ProductController {
      */
 
     @PostMapping("/createProduct/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Product> createProduct(@PathVariable long id, @RequestBody Product productDetails)
             throws RuntimeException {
 

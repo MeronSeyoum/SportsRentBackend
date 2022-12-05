@@ -6,6 +6,7 @@
 */
 package com.SportRentalInventorySystem.BackEnd.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,6 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     
 ////  Search category by keyword
-//  @Query("select c from User c where c.LastName LIKE %?1%")
-//  public List<User> searchByUserName(String keyWords);
+  @Query("select c from User c where c.firstName LIKE %?1% OR c.lastName LIKE %?1%")
+  public List<User> searchByUserName(String keyWords);
 }

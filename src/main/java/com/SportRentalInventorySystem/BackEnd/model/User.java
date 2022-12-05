@@ -69,10 +69,10 @@ public class User implements Serializable {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "user")
-    private UserAddress userAddress;
+//    @OneToOne(fetch = FetchType.LAZY,
+//            cascade =  CascadeType.ALL,
+//            mappedBy = "user")
+//    private UserAddress userAddress;
 
     public User() {
         this.create_at = LocalDate.now();
@@ -183,13 +183,13 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public UserAddress getUserAddress() {
-        return userAddress;
-    }
-
-    public void setUserAddress(UserAddress userAddress) {
-        this.userAddress = userAddress;
-    }
+//    public UserAddress getUserAddress() {
+//        return userAddress;
+//    }
+//
+//    public void setUserAddress(UserAddress userAddress) {
+//        this.userAddress = userAddress;
+//    }
 
  
  

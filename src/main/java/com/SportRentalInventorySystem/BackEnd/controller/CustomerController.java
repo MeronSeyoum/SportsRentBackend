@@ -21,6 +21,7 @@ public class CustomerController {
 
     @Autowired
     private UserRepository userRepository;
+    
     @Autowired
     private UserAddressRepository userAddressRepository;
     
@@ -34,7 +35,7 @@ public class CustomerController {
      */
 
     @PostMapping("/createUser")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User createUser(@RequestBody User user) {
         return userRepository.save(user);
     }
@@ -54,16 +55,7 @@ public class CustomerController {
         updateUser.setFirstName(userDetails.getFirstName());
         updateUser.setLastName(userDetails.getLastName());
         updateUser.setPhoneNumber(userDetails.getPhoneNumber());
-       
-         UserAddress userAddress =new UserAddress();
-     // Set child reference(userAddress) in parent entity(user)
-        updateUser.setUserAddress(userAddress);
-
-        // Set parent reference(user) in child entity(userAddress)
-        userAddress.setUser(updateUser);
-
-        // Save Parent Reference (which will save the child as well)
-        
+               
         userRepository.save(updateUser);
 
         return ResponseEntity.ok(updateUser);
@@ -113,13 +105,13 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//  Product search 
-//  @GetMapping("/searchUser/{keyWords}")
-//  @PreAuthorize("hasRole('ROLE_ADMIN')")
-//  public ResponseEntity<?> SearchUser(@PathVariable String keyWords) {
-//      return new ResponseEntity<>(userRepository.searchByUserName(keyWords), HttpStatus.OK);
-//  }
-//    
+//  User search based on the given keyword
+  @GetMapping("/searchUser/{keyWords}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public ResponseEntity<?> SearchUser(@PathVariable String keyWords) {
+      return new ResponseEntity<>(userRepository.searchByUserName(keyWords), HttpStatus.OK);
+  }
+    
 
 
 }

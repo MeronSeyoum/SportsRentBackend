@@ -20,7 +20,9 @@ import com.SportRentalInventorySystem.BackEnd.model.ProductList;
 import com.SportRentalInventorySystem.BackEnd.model.Reservation;
 import com.SportRentalInventorySystem.BackEnd.model.ReservedItem;
 import com.SportRentalInventorySystem.BackEnd.model.User;
+import com.SportRentalInventorySystem.BackEnd.repository.ProductRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.ReservationRepository;
+import com.SportRentalInventorySystem.BackEnd.repository.ReservedItemRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 
 @CrossOrigin(origins = "*" ) 
@@ -31,23 +33,73 @@ public class ReservationController {
     
     @Autowired
     private ReservationRepository reservationRepository;
+    
+    
+    @Autowired
+    private ReservedItemRepository reserveItemRepository;
    
     @Autowired
     private UserRepository userRepository;
     
+    @Autowired
+    private ProductRepository productRepository;
+    
     @PostMapping("/makeReservation/{id}")
     public ResponseEntity<Reservation> makeReservation(@PathVariable long id, @RequestBody Reservation reservationDetails ) {
+   
         
-       
         Reservation reserve = userRepository.findById(id).map(user -> {
             reservationDetails.setUser(user);
+          
             return reservationRepository.save(reservationDetails);
         }).orElseThrow(() -> new RuntimeException("create new Reservation fail "));   
         
+        
+
+        
         return new ResponseEntity<>(reserve, HttpStatus.CREATED);
     }
-       
+      
     
+    @PostMapping("/addCart/{id}")
+    public ResponseEntity<?> addCart(@PathVariable long id, @RequestBody List<ReservedItem> reserveItem ) {
+        reservationRepository.flush();
+        
+      
+//      get last entered reservation id
+      Product lastInsertedProduct = null;
+      long reserveId = 0, productId=0;
+      
+
+//    insert product list using the as last inserted row primary id
+          
+      
+      Reservation reserve = reservationRepository.findLastRecord();
+     
+      
+    
+        
+      
+     for(int i = 0; i < reserveItem.size(); i++) {
+    System.out.print(reserveItem); 
+    // get the reserve row as object from table using id
+      lastInsertedProduct = getProductId(productId);
+      
+//    ReservedItem itemReserve = new ReservedItem(reserveItem.get(0), reserveItem.get(1), lastInsertedProduct ,reserve);
+
+//         reserveItemRepository.save(itemReserve);  
+      }
+      
+      return new ResponseEntity<>(reserveItem, HttpStatus.CREATED);
+         
+    }
+    
+    public Product getProductId(long id) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not exist with id:" + id));
+        return product;
+    }
     
 /**
  *  Retrieve User profile data
