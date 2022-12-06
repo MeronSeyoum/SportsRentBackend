@@ -190,7 +190,7 @@ public class AccountController {
             
                 try {
         userService.updateResetPasswordToken(token, email);
-        String resetPasswordLink = "https://sportsrent-backend.herokuapp.com/ForgotPassword/" + token;
+        String resetPasswordLink = "https://sportsrentfrontend.herokuapp.com/ForgotPassword/" + token;
         
         sendEmail(email, resetPasswordLink);
         //model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
