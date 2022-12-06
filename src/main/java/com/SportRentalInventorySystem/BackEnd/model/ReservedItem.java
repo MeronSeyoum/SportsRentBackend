@@ -16,80 +16,70 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "reserved_item")
 public class ReservedItem {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "rItem_id")
-        private long rItem_id;
-        
-        @Column(name = "amount")
-        private long amount;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-        @Column(name = "quantity")
-        private long quantity;
+    @Column(name = "amount")
+    private long amount;
 
-        @ManyToOne(fetch = FetchType.EAGER, optional = false)
-        @JoinColumn(name="product_id", nullable = false)
-        private Product product ;
-      
-       
-        @ManyToOne(fetch = FetchType.EAGER, optional = false)
-        @JoinColumn(name="reserve_id", nullable = false)
-        private Reservation reserve ;
-       
-        
-        public ReservedItem() {}
+    @Column(name = "quantity")
+    private long quantity;
 
-        public ReservedItem(long amount, long quantity, Product product, Reservation reserve) {
-            super();
-            this.amount = amount;
-            this.quantity = quantity;
-            this.product = product;
-            this.reserve = reserve;
-        }
-        public long getRItem_id() {
-            return rItem_id;
-        }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-        public void setRItem_id(long rItem_id) {
-            this.rItem_id = rItem_id;
-        }
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Reservation reservation;
 
-        public long getAmount() {
-            return amount;
-        }
+    public ReservedItem() {
+    }
 
-        public void setAmount(long amount) {
-            this.amount = amount;
-        }
+    public ReservedItem(long amount, long quantity, Product product, Reservation reserve) {
+        super();
+        this.amount = amount;
+        this.quantity = quantity;
+        this.product = product;
+        this.reservation = reserve;
+    }
 
-        public long getQuantity() {
-            return quantity;
-        }
+    public long getId() {
+        return id;
+    }
 
-        public void setQuantity(long quantity) {
-            this.quantity = quantity;
-        }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        public Product getProduct() {
-            return product;
-        }
+    public long getAmount() {
+        return amount;
+    }
 
-        public void setProduct(Product product) {
-            this.product = product;
-        }
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
 
-       
+    public long getQuantity() {
+        return quantity;
+    }
 
-        public Reservation getReserve() {
-            return reserve;
-        }
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
 
-        public void setReserve(Reservation reserve) {
-            this.reserve= reserve;
-        }
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
 //        @Override
 //        public boolean equals(Object o) {
@@ -99,10 +89,17 @@ public class ReservedItem {
 //            return Objects.equals(rItem_id, reservedItem.rItem_id);
 //        }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(rItem_id);
-        }
-    
-    
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }

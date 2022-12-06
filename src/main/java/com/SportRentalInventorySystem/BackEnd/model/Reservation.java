@@ -26,14 +26,13 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reserve_id")
-    private Long reserve_id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name="user")
     private User user;
-  
-     @Column(name = "address")
+    
+    @Column(name = "address")
     private String address;
      
     @Column(name = "city")
@@ -69,20 +68,40 @@ public class Reservation {
     @Column(name = "reservation_Status")
     private String reservation_Status;
     
-   
+    @Column(name = "reservation_Code")
+    private String reservation_Code;
     
-
+   
+    public Reservation(User user, String address, String city, String province, String country, String zip,
+            Integer duration, LocalDate startDate, LocalDate endDate, Double totalPrice, LocalDateTime date_Stamp_Date,
+            String payment_Option, String reservation_Status) {
+        super();
+        this.user = user;
+        this.address = address;
+        this.city = city;
+        this.province = province;
+        this.country = country;
+        this.zip = zip;
+        this.duration = duration;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.totalPrice = totalPrice;
+        this.date_Stamp_Date = date_Stamp_Date;
+        this.payment_Option = payment_Option;
+        this.reservation_Status = reservation_Status;
+    }
 
     public Reservation() {
+        super();
         this.date_Stamp_Date = LocalDateTime.now();
     }
 
-    public Long getReserve_id() {
-        return reserve_id;
+    public long getId() {
+        return id;
     }
 
-    public void setReserve_id(Long reserve_id) {
-        this.reserve_id = reserve_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Double getTotalPrice() {
@@ -183,6 +202,14 @@ public class Reservation {
 
 
 
+    public String getReservation_Code() {
+        return reservation_Code;
+    }
+
+    public void setReservation_Code(String reservation_Code) {
+        this.reservation_Code = reservation_Code;
+    }
+
     public User getUser() {
         return user;
     }
@@ -191,6 +218,8 @@ public class Reservation {
         this.user = user;
     }
 
+    
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -198,11 +227,11 @@ public class Reservation {
         if (o == null || getClass() != o.getClass())
             return false;
         Reservation reserve = (Reservation) o;
-        return Objects.equals(reserve_id, reserve.reserve_id);
+        return Objects.equals(id, reserve.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reserve_id);
+        return Objects.hash(id);
     }
 }

@@ -64,6 +64,13 @@ public class PublicController {
       return new ResponseEntity<>(productRepository.productByCatId(id), HttpStatus.OK);
   }
   
+  
+//Get product by Category ID
+@GetMapping("/getProductByCategory")
+public ResponseEntity<?> getProductByCategory() {
+    return new ResponseEntity<>(productRepository.productByCat(), HttpStatus.OK);
+}
+    
   // Retrieve Product information and send to client
   @GetMapping("/searchProduct")
   public ResponseEntity<?> ProductSearch() {

@@ -15,8 +15,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     public List<Product> searchByProName(String keyWords);
 
 //  Get all product by category ID p.id, p.product_name, p.description, p.price, c.category_name, c.season , p.product_image
+//    get product and category using id
     @Query(nativeQuery = true, value = "SELECT * FROM product p LEFT JOIN category c ON c.category_id = p.category WHERE c.category_id=:category_id")
     public List<ProductProjection> productByCatId(long category_id);
+    
+    
+    
+//  get product and category using id
+  @Query(nativeQuery = true, value = "SELECT * FROM product p LEFT JOIN category c ON c.category_id = p.category")
+  public List<ProductProjection> productByCat();
+
     
 //get product data using product name
     @Query("select p from Product p where p.product_Name=:product_Name")

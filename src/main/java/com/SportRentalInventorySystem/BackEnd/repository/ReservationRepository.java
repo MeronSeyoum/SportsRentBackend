@@ -10,8 +10,9 @@ import com.SportRentalInventorySystem.BackEnd.model.Reservation;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 
-    
-    @Query(nativeQuery = true, value = "SELECT * FROM reserved r inner join users u on r.user=u.id where r.user =:user")
+//  + "r.address, r.city, country, r.province,r.zip, u.first_name, u.last_name "
+ 
+    @Query(nativeQuery = true, value = "SELECT DISTINCT r.* FROM reserved r inner join users u on r.user = u.id where r.user =:user Group by r.user")
     public List<ReservationProjection> pickupInfo(long user);
     
     @Query(nativeQuery = true, value = "SELECT * FROM reserved r order by date_Stamp_Date desc limit 1 ")

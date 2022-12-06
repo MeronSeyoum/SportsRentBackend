@@ -190,7 +190,7 @@ public class AccountController {
             
                 try {
         userService.updateResetPasswordToken(token, email);
-        String resetPasswordLink = "http://localhost:3000/ForgotPassword/" + token;
+        String resetPasswordLink = "https://sportsrent-backend.herokuapp.com/ForgotPassword/" + token;
         
         sendEmail(email, resetPasswordLink);
         //model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
@@ -238,7 +238,7 @@ public class AccountController {
     String subject = "Here's the link to reset your password";
      
     String content = "<p>Hello,</p>"
-            + "<p>You have requested to reset your password.</p>"
+            + "<p>You are receiving this email because we received a password reset request for your account.</p>"
             + "<p>Click the link below to change your password:</p>"
             + "<p><a href=\"" + link + "\">Change my password</a></p>"
             + "<br>"
