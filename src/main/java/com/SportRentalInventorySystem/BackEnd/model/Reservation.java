@@ -32,6 +32,9 @@ public class Reservation {
     @JoinColumn(name="user")
     private User user;
     
+    @Column(name = "pickupFullName")
+    private String pickupFullName;
+    
     @Column(name = "address")
     private String address;
      
@@ -74,7 +77,7 @@ public class Reservation {
    
     public Reservation(User user, String address, String city, String province, String country, String zip,
             Integer duration, LocalDate startDate, LocalDate endDate, Double totalPrice, LocalDateTime date_Stamp_Date,
-            String payment_Option, String reservation_Status) {
+            String payment_Option, String reservation_Status, String reservation_Code) {
         super();
         this.user = user;
         this.address = address;
@@ -89,6 +92,7 @@ public class Reservation {
         this.date_Stamp_Date = date_Stamp_Date;
         this.payment_Option = payment_Option;
         this.reservation_Status = reservation_Status;
+        this.reservation_Code = reservation_Code;
     }
 
     public Reservation() {
@@ -102,6 +106,14 @@ public class Reservation {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getPickupFullName() {
+        return pickupFullName;
+    }
+
+    public void setPickupFullName(String pickupFullName) {
+        this.pickupFullName = pickupFullName;
     }
 
     public Double getTotalPrice() {

@@ -104,7 +104,7 @@ public class ReservationController {
     }
 
     /**
-     * Retrieve User profile data
+     * Retrieve data
      * 
      * @param id
      * @return
@@ -114,7 +114,43 @@ public class ReservationController {
 
         return new ResponseEntity<>(reservationRepository.pickupInfo(id), HttpStatus.OK);
     }
+/**
+ * Fetch reservation info by id
+ * @param id
+ * @return
+ */
+    @GetMapping("/getReservationById/{id}")
+    public ResponseEntity<?> getReservationById(@PathVariable long id) {
 
+        return new ResponseEntity<>(reservationRepository.findById(id), HttpStatus.OK);
+    }
+    
+    /**
+     * fetch reserved item by id reservation id
+     */
+    @GetMapping("/getReservedItemById/{id}")
+    public ResponseEntity<?> getReservedItemById(@PathVariable long id) {
+
+        return new ResponseEntity<>(reserveItemRepository.findByReservationId(id), HttpStatus.OK);
+    }
+    
+    /**
+     * get all reservation
+     */
+    
+    @GetMapping("/getReservation")
+    public ResponseEntity<?> getReservation() {
+
+        return new ResponseEntity<>(reservationRepository.findAll(), HttpStatus.OK);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * send email with a link to a user to change password
      * @param recipientEmail

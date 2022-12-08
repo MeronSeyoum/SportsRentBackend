@@ -52,6 +52,12 @@ public class PublicController {
         return new ResponseEntity<>(productRepository.findByTopSale(), HttpStatus.OK);
     }
  
+//    Get all summer product
+    @GetMapping("/ProductBySeason/{season}")
+    public ResponseEntity<?> getProductBySeason(@PathVariable String season) {
+        return new ResponseEntity<>(productRepository.findBySeason(season), HttpStatus.OK);
+    }
+    
     @GetMapping("/category")
     public ResponseEntity<?> getAllCategorys(){
         return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
