@@ -67,21 +67,21 @@ public class CategoryController {
      * @param categoryDetails
      * @return
      */
-    @PostMapping("/createCategory/{image}")
+    @PostMapping("/createCategory")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> createCategory(@PathVariable MultipartFile image, @RequestBody Category categoryDetails) throws IOException  {
+    public ResponseEntity<Category> createCategory( @RequestBody Category categoryDetails) throws IOException  {
 
-        
-        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-        categoryDetails.setCategory_Image(fileName);
-         
+//        @PathVariable MultipartFile image,
+//        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+//        categoryDetails.setCategory_Image(fileName);
+//         
           Category category = categoryRepository.save(categoryDetails); 
           
  
-        String uploadDir = "assets/productImage/image_" + category.getCategory_id();
- 
-        FileUploadUtil.saveFile(uploadDir, fileName, image);
-        
+//        String uploadDir = "assets/productImage/image_" + category.getCategory_id();
+// 
+//        FileUploadUtil.saveFile(uploadDir, fileName, image);
+//        
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
 
