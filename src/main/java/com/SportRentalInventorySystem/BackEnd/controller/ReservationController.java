@@ -187,13 +187,11 @@ public class ReservationController {
            +" <tr> <td colspan='5'>    Name:   "+ reserved.getPickupFullName()+" </td></tr>"      
            +" <tr> <td colspan='5'>    Contact: email@email.com </td></tr>"
            +" <tr> <td>   Product Name </td>        <td> COST </td>   <td> QUANTITY</td> <td> AMOUNT      </td></tr>"
-           +" <tr> <td>   Product Name </td>        <td> $    </td>   <td>   1     </td> <td>  $          </td></tr> "
-           +" <tr> <td>   Product Name </td>        <td> $    </td>   <td>   1     </td> <td>  $          </td></tr> "
-           +" <tr> <td>   Product Name </td>        <td> $    </td>   <td>   1     </td> <td>  $          </td></tr> "
-           +" <tr> <td colspan='2'> </td>                         <td> Subtotal   </td>   <td> $          </td></tr>"            
+           +" <tr> <td>   14’ Aluminium Boat </td>        <td> $130    </td>   <td>   1     </td> <td>  $130          </td></tr> "
+           +" <tr> <td colspan='2'> </td>                         <td> Subtotal   </td>   <td> $130          </td></tr>"            
            +" <tr> <td colspan='2'>  </td>                        <td> VAT rate (%)</td>  <td>         5%  </td></tr>"
-           +" <tr> <td colspan='2'>   </td>                       <td> VAT          </td> <td> $          </td></tr>  "      
-           +" <tr> <td colspan='2'>   </td>                        <td> Total        </td> <td> $          </td></tr>"
+           +" <tr> <td colspan='2'>   </td>                       <td> VAT          </td> <td> $6.5          </td></tr>  "      
+           +" <tr> <td colspan='2'>   </td>                        <td> Total        </td> <td> $ 136.5         </td></tr>"
            +" </table></body></html>";           
 
     helper.setSubject(subject);

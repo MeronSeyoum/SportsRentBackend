@@ -17,6 +17,7 @@ import com.SportRentalInventorySystem.BackEnd.model.User;
 import com.SportRentalInventorySystem.BackEnd.model.UserAddress;
 import com.SportRentalInventorySystem.BackEnd.repository.CategoryRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.ProductRepository;
+import com.SportRentalInventorySystem.BackEnd.repository.ReservationRepository;
 import com.SportRentalInventorySystem.BackEnd.repository.UserRepository;
 
 @CrossOrigin(origins = "*" ) 
@@ -32,6 +33,8 @@ public class PublicController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ReservationRepository reservationRepository;
     // access to all public content
 
     // retrieve all category for summer
@@ -83,7 +86,11 @@ public ResponseEntity<?> getProductByCategory() {
       return new ResponseEntity<>(productRepository.ProductSearch(), HttpStatus.OK);
   }
     
-  
+  @GetMapping("/getPickupInfo/{id}")
+  public ResponseEntity<?> getPickupInfo(@PathVariable long id) {
+
+      return new ResponseEntity<>(reservationRepository.pickupInfo(id), HttpStatus.OK);
+  }
   @PutMapping("/update/{id}")
  
   public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User userDetails, UserAddress userAddress) {
