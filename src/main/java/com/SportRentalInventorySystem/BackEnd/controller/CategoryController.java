@@ -1,9 +1,12 @@
 package com.SportRentalInventorySystem.BackEnd.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +16,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.SportRentalInventorySystem.BackEnd.ExceptionHandler.ResourceNotFoundException;
 import com.SportRentalInventorySystem.BackEnd.model.Category;
 import com.SportRentalInventorySystem.BackEnd.repository.CategoryRepository;
+import com.SportRentalInventorySystem.BackEnd.utility.FileUploadUtil;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -61,12 +67,21 @@ public class CategoryController {
      * @param categoryDetails
      * @return
      */
-    @PostMapping("/createCategory")
+    @PostMapping("/createCategory/{image}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> createCategory(@RequestBody Category categoryDetails) {
+    public ResponseEntity<Category> createCategory(@PathVariable MultipartFile image, @RequestBody Category categoryDetails) throws IOException  {
 
-        Category category = categoryRepository.save(categoryDetails);
-
+        
+        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+        categoryDetails.setCategory_Image(fileName);
+         
+          Category category = categoryRepository.save(categoryDetails); 
+          
+ 
+        String uploadDir = "assets/productImage/image_" + category.getCategory_id();
+ 
+        FileUploadUtil.saveFile(uploadDir, fileName, image);
+        
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
 

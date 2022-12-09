@@ -91,7 +91,7 @@ public class ReservationController {
             reserveItemRepository.save(itemReserve);
         }
 //        after successful cart save send email confirmation
-        sendEmail(email, reserve.getReservation_Code());
+        sendEmail(email, reserve, reserve.getReservation_Code() );
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
@@ -145,6 +145,11 @@ public class ReservationController {
     }
     
     
+    @GetMapping("/getReservationLastRecord")
+    public ResponseEntity<?> getReservationLastRecord() {
+
+        return new ResponseEntity<>(reservationRepository.findLastRecord(), HttpStatus.OK);
+    }
     
     
     
@@ -158,7 +163,7 @@ public class ReservationController {
      * @throws MessagingException
      * @throws UnsupportedEncodingException
      */
-    private void sendEmail(String recipientEmail, String code) throws MessagingException, UnsupportedEncodingException {
+    private void sendEmail(String recipientEmail, Reservation reserved, String code) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();              
     MimeMessageHelper helper = new MimeMessageHelper(message);
      
@@ -173,14 +178,14 @@ public class ReservationController {
            +" <table style='border:2px solid black width:100%'>"
            +"<tr style =bgcolor:#33CC99>"
            +"     <td colspan='3'>   Reservation Code:   "+ code +" </td>            <td colspan='2'><h3>Sports Rent</h3><td></tr>"
-           +"<tr> <td colspan='3'>   Reservation Date:    mm/dd/yyyy         <td colspan='2'>Your Street 123 </td></tr>"
+           +"<tr> <td colspan='3'>   Reservation Date:    "+ reserved.getStartDate()+"         <td colspan='2'>"+ reserved.getAddress()+" </td></tr>"
            +"<tr> <td colspan='3'>                                           <td colspan='2'>12345 Your City </td></tr>"
            +"<tr> <td colspan='3'>   Reservation Detail                      <td colspan='2'> COUNTRY </td></tr>"
-            +"<tr> <td colspan='3'>  Pickup:  </td> <td colspan='2'>   mm/dd/yyyy  </td></tr>"
-           +" <tr> <td colspan='3'>  Return:  </td> <td colspan='2'>   mm/dd/yyyy  </td></tr><br><br>"
+            +"<tr> <td colspan='3'>  Pickup:  </td> <td colspan='2'>   "+ reserved.getStartDate()+" </td></tr>"
+           +" <tr> <td colspan='3'>  Return:  </td> <td colspan='2'>  "+ reserved.getEndDate()+"  </td></tr><br><br>"
            +"<tr> <td colspan='5'>    Reserved :<td></tr>"
-           +" <tr> <td colspan='5'>    Name:   Meron Seyoum </td></tr>"      
-           +" <tr> <td colspan='5'>    Contact:  meryato@email.com </td></tr>"
+           +" <tr> <td colspan='5'>    Name:   "+ reserved.getPickupFullName()+" </td></tr>"      
+           +" <tr> <td colspan='5'>    Contact: email@email.com </td></tr>"
            +" <tr> <td>   Product Name </td>        <td> COST </td>   <td> QUANTITY</td> <td> AMOUNT      </td></tr>"
            +" <tr> <td>   Product Name </td>        <td> $    </td>   <td>   1     </td> <td>  $          </td></tr> "
            +" <tr> <td>   Product Name </td>        <td> $    </td>   <td>   1     </td> <td>  $          </td></tr> "
