@@ -13,7 +13,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
+/**
+* @author  Meron Seyoum
+* @version 1.0
+* @since   2022-11-14
+* 
+ * This is a Java class for a ProductList entity that is annotated for use with the Java Persistence API (JPA). 
+ * The @Entity and @Table annotations are used to specify that this class should be mapped to a productlist table in a database.
+ *  The @Id and @GeneratedValue annotations are used to specify that the product_List_id field is the primary key of the table,
+ *   and that its values should be generated automatically by the database. 
+ *   The @ManyToOne annotation is used to specify a many-to-one relationship between ProductList entities and Product entities,
+ *  and the @Column annotations are used to specify that the fields of this class should be mapped to columns in the productlist table.
+ */
     @Entity
     @Table(name = "productlist")
     public class ProductList implements Serializable {

@@ -1,5 +1,14 @@
 package com.SportRentalInventorySystem.BackEnd.controller;
 
+/**
+ *  @author  Meron Seyoum
+ * @version 1.0
+ * 
+ * The CategoryController class is a REST controller for managing category information. 
+ * It provides methods for getting, creating, updating, and deleting category information. 
+ * These methods can only be accessed by users with the appropriate roles, as specified by the @PreAuthorize annotations. 
+ * This class also uses the CategoryRepository to access and manipulate category data stored in a database.
+ */
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +32,6 @@ import com.SportRentalInventorySystem.BackEnd.model.Category;
 import com.SportRentalInventorySystem.BackEnd.repository.CategoryRepository;
 import com.SportRentalInventorySystem.BackEnd.utility.FileUploadUtil;
 
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/category")
@@ -32,52 +40,22 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    
-
-    /**
-     * Category information managed by admin. manager CRUD operation is done here
-     * 
-     * @return
-     */
-
-    @GetMapping("/categories")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getCategories() {
-        return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
-    }
-
-    /**
-     * build get Category by id REST API
-     * 
-     * @param id
-     * @return
-     */
-    @GetMapping("/categoryById/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> getCategory(@PathVariable long id) {
-
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not exist with id:" + id));
-        return ResponseEntity.ok(category);
-    }
-
     /**
      * build create Category REST API
      * 
      * @param categoryDetails
-     * @return
+     * @return Category
      */
     @PostMapping("/createCategory")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> createCategory( @RequestBody Category categoryDetails) throws IOException  {
+    public ResponseEntity<Category> createCategory(@RequestBody Category categoryDetails) throws IOException {
 
 //        @PathVariable MultipartFile image,
 //        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
 //        categoryDetails.setCategory_Image(fileName);
 //         
-          Category category = categoryRepository.save(categoryDetails); 
-          
- 
+        Category category = categoryRepository.save(categoryDetails);
+
 //        String uploadDir = "assets/productImage/image_" + category.getCategory_id();
 // 
 //        FileUploadUtil.saveFile(uploadDir, fileName, image);
@@ -109,7 +87,6 @@ public class CategoryController {
      * @return
      */
 
-    
 //    Update is not working
     @PutMapping("/categoryUpdate/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -138,5 +115,32 @@ public class CategoryController {
     public ResponseEntity<?> searchCategory(@PathVariable String keyWords) {
         return new ResponseEntity<>(categoryRepository.searchByCatName(keyWords), HttpStatus.OK);
     }
-    
+
+    /**
+     * Category information managed by admin. manager CRUD operation is done here
+     * 
+     * @return
+     */
+
+    @GetMapping("/categories")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getCategories() {
+        return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
+    }
+
+    /**
+     * build get Category by id REST API
+     * 
+     * @param id
+     * @return
+     */
+    @GetMapping("/categoryById/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Category> getCategory(@PathVariable long id) {
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not exist with id:" + id));
+        return ResponseEntity.ok(category);
+    }
+
 }

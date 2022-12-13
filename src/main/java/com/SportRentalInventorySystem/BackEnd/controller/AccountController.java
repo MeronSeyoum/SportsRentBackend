@@ -1,11 +1,14 @@
 package com.SportRentalInventorySystem.BackEnd.controller;
 
 /**
-* *
 *
 * @author  Meron seyoum
 * @version 1.0
-* @since   2022-09-24
+* 
+* 
+* This is the controller for the account functionality in the Sport Rental Inventory System. 
+* The controller defines various methods for managing user accounts, such as creating new accounts, logging in, and resetting passwords. 
+* It also includes methods for handling authentication and authorization using JWT tokens and email for resetting password.
 */
 
 import com.SportRentalInventorySystem.BackEnd.ExceptionHandler.ResourceNotFoundException;

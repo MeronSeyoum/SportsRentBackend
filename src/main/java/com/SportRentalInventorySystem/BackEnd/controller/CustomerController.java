@@ -1,5 +1,15 @@
 package com.SportRentalInventorySystem.BackEnd.controller;
 
+/**
+ *  @author  Meron Seyoum
+ * @version 1.0
+ *
+ *The code is a controller class for managing user accounts in a Spring Boot application. 
+ *The class defines various methods for creating, updating, retrieving, and deleting user accounts. 
+ *It also defines methods for searching user accounts based on keywords and for creating, updating, and retrieving user addresses. 
+ *The controller uses the @RestController and @RequestMapping annotations to define its REST API end points. 
+ *It also uses the @PreAuthorize annotation to specify which roles are allowed to access each end point.
+ */
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

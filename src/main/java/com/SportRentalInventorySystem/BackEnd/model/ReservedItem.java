@@ -1,5 +1,21 @@
 package com.SportRentalInventorySystem.BackEnd.model;
 
+/**
+ * @author  Meron Seyoum
+* @version 1.0
+* @since   2022-11-19
+ * 
+ * 
+ * This is a Java class for a ReservedItem entity that is annotated for use with the Java Persistence API (JPA). 
+ * The @Entity and @Table annotations are used to specify that this class should be mapped to a reserved_item table in a database. 
+ * The @Id and @GeneratedValue annotations are used to specify that the id field is the primary key of the table, 
+ * and that its values should be generated automatically by the database. 
+ * The @ManyToOne and @OneToMany annotations are used to specify relationships between this ReservedItem entity and other entities. 
+ * The @Column annotations are used to specify that the fields of this class should be mapped to columns in the reserved_item table. 
+ * This class also contains a hashCode method and an equals method that are used to compare ReservedItem objects based on their id values. 
+ */
+
+
 import java.util.Objects;
 import java.util.Set;
 

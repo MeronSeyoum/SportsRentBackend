@@ -5,6 +5,21 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+/**
+* @author  Meron Seyoum
+* @version 1.0
+* @since   2022-09-24
+* 
+* This code is a Java class representing a product in a database. 
+* The @Entity and @Table annotations indicate that this class is a JPA entity 
+* and should be mapped to a database table with the name "product", respectively. 
+* The @Id and @GeneratedValue annotations specify that the id field is 
+* the primary key for the entity and should be generated automatically by the database. 
+* The @Column annotations map the fields in this class to columns in the "product" table in the database. 
+* The @ManyToOne and @OneToMany annotations specify relationships between this entity and other entities in the database. This class also provides getters and setters for each field, 
+* as well as a toString() method that prints the fields of the class in a human-readable format for testing and debugging.
+*/
+
 @Entity
 @Table(name = "product")
 public class Product implements Serializable {

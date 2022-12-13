@@ -2,6 +2,13 @@
 * @author  Meron Seyoum
 * @version 1.0
 * @since   2022-09-24
+*
+*This code is a Java class called User that represents a user in a system. 
+*The class has fields for the user's id, username, email, password, first name, 
+*last name, phone number, and various other properties. 
+*The class also has methods for setting and getting the values of these fields. 
+*The class is marked with @Entity and @Table annotations, which means it is a JPA entity and is mapped to a database table.
+* It also has constraints specified using the @NotBlank, @Size, and @Email annotations to validate the values of certain fields.
 */
 package com.SportRentalInventorySystem.BackEnd.model;
 
@@ -21,9 +28,9 @@ import javax.validation.constraints.Size;
         @UniqueConstraint(columnNames = "email")
 })
 public class User implements Serializable {
-   
+
     private static final long serialVersionUID = 1L;
-   
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -191,6 +198,4 @@ public class User implements Serializable {
 //        this.userAddress = userAddress;
 //    }
 
- 
- 
 }

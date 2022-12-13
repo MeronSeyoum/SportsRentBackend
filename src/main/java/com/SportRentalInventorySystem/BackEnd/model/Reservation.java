@@ -1,5 +1,19 @@
 package com.SportRentalInventorySystem.BackEnd.model;
 
+/**
+* @author  Meron Seyoum
+* @version 1.0
+* @since   2022-11-19
+ * 
+ * 
+ * This is a Java class for a Reservation entity that is annotated for use with the Java Persistence API (JPA). 
+ * The @Entity and @Table annotations are used to specify that this class should be mapped to a reserved table in a database. 
+ * The @Id and @GeneratedValue annotations are used to specify that the id field is the primary key of the table,
+ *  and that its values should be generated automatically by the database.
+ *   The @ManyToOne and @OneToMany annotations are used to specify relationships between this Reservation entity and other entities.
+ *  The @Column annotations are used to specify that the fields of this class should be mapped to columns in the reserved table.
+ * 
+ */
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -1,5 +1,16 @@
 package com.SportRentalInventorySystem.BackEnd.controller;
 
+/**
+ * @author  Meron Seyoum
+ * @version 1.0
+ * 
+ * This is a Java class that defines a REST controller for managing products. It has methods for handling HTTP requests 
+ * for creating, updating, deleting, and getting product information. The methods are annotated with 
+ * @PostMapping, @PutMapping, @DeleteMapping, and @GetMapping, respectively, which determine 
+ * the HTTP request method and the path that the method will handle. The class is also annotated with @RestController and @RequestMapping, 
+ * which identify the class as a REST controller and set the base path for the controller's methods.
+ */
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

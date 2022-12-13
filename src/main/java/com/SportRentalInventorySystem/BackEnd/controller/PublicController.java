@@ -1,5 +1,19 @@
 package com.SportRentalInventorySystem.BackEnd.controller;
 
+/**
+*
+* @author  Meron seyoum
+* @version 1.0
+* 
+*This is a public controller class for the Sport Rental Inventory System. It contains a number of REST API methods that can be accessed 
+*by users to retrieve information about products and categories. These methods include getSummerCategory, 
+*which returns all categories for the summer season, and getWinterCategory, which returns all categories for the winter season. 
+*Other methods include getAllProduct, which returns all products, and getProductBySeason, which returns all products for a given season. 
+*Additionally, there are methods for searching for products, retrieving pickup and drop off information, and more.
+*
+*/
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

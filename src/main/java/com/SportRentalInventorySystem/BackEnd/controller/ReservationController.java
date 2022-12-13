@@ -1,5 +1,17 @@
 package com.SportRentalInventorySystem.BackEnd.controller;
 
+/**
+*
+* @author  Meron seyoum
+* @version 1.0
+ * 
+ * This code is a REST API that allows users to make reservations for products and add products to a shopping cart. 
+ * It also allows for the retrieval of summer and winter categories, top-selling products, and products by category and season. 
+ * It also has functionality for sending emails and searching for products. The code uses the Spring framework and uses 
+ * the @RestController and @RequestMapping annotations to map incoming HTTP requests to specific handler methods. 
+ * It also uses the @Autowired annotation to inject dependencies and the @CrossOrigin annotation to enable cross-origin resource sharing (CORS). 
+ * The code also uses the @PreAuthorize annotation to enable access control.
+ */
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -91,7 +103,7 @@ public class ReservationController {
             reserveItemRepository.save(itemReserve);
         }
 //        after successful cart save send email confirmation
-        sendEmail(email, reserve, reserve.getReservation_Code() );
+        sendEmail(email, reserve, reserve.getReservation_Code());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
@@ -114,17 +126,19 @@ public class ReservationController {
 
         return new ResponseEntity<>(reservationRepository.pickupInfo(id), HttpStatus.OK);
     }
-/**
- * Fetch reservation info by id
- * @param id
- * @return
- */
+
+    /**
+     * Fetch reservation info by id
+     * 
+     * @param id
+     * @return
+     */
     @GetMapping("/getReservationById/{id}")
     public ResponseEntity<?> getReservationById(@PathVariable long id) {
 
         return new ResponseEntity<>(reservationRepository.findById(id), HttpStatus.OK);
     }
-    
+
     /**
      * fetch reserved item by id reservation id
      */
@@ -133,72 +147,71 @@ public class ReservationController {
 
         return new ResponseEntity<>(reserveItemRepository.findByReservationId(id), HttpStatus.OK);
     }
-    
+
     /**
      * get all reservation
      */
-    
+
     @GetMapping("/getReservation")
     public ResponseEntity<?> getReservation() {
 
         return new ResponseEntity<>(reservationRepository.findAll(), HttpStatus.OK);
     }
-    
-    
+
     @GetMapping("/getReservationLastRecord")
     public ResponseEntity<?> getReservationLastRecord() {
 
         return new ResponseEntity<>(reservationRepository.findLastRecord(), HttpStatus.OK);
     }
-    
-    
-    
-    
-    
-    
+
     /**
      * send email with a link to a user to change password
+     * 
      * @param recipientEmail
      * @param link
      * @throws MessagingException
      * @throws UnsupportedEncodingException
      */
-    private void sendEmail(String recipientEmail, Reservation reserved, String code) throws MessagingException, UnsupportedEncodingException {
-        MimeMessage message = mailSender.createMimeMessage();              
-    MimeMessageHelper helper = new MimeMessageHelper(message);
-     
-    helper.setFrom("sportsrentReset@gmail.com", "Sportrent Support");
-    
-    helper.setTo(recipientEmail);
-    
-    String subject = "Reservation confirmation email";
-     
-    String content = " <p>RESERVATION CONFIRMATION </p>"
-           +"<html><body>"
-           +" <table style='border:2px solid black width:100%'>"
-           +"<tr style =bgcolor:#33CC99>"
-           +"     <td colspan='3'>   Reservation Code:   "+ code +" </td>            <td colspan='2'><h3>Sports Rent</h3><td></tr>"
-           +"<tr> <td colspan='3'>   Reservation Date:    "+ reserved.getStartDate()+"         <td colspan='2'>"+ reserved.getAddress()+" </td></tr>"
-           +"<tr> <td colspan='3'>                                           <td colspan='2'>12345 Your City </td></tr>"
-           +"<tr> <td colspan='3'>   Reservation Detail                      <td colspan='2'> COUNTRY </td></tr>"
-            +"<tr> <td colspan='3'>  Pickup:  </td> <td colspan='2'>   "+ reserved.getStartDate()+" </td></tr>"
-           +" <tr> <td colspan='3'>  Return:  </td> <td colspan='2'>  "+ reserved.getEndDate()+"  </td></tr><br><br>"
-           +"<tr> <td colspan='5'>    Reserved :<td></tr>"
-           +" <tr> <td colspan='5'>    Name:   "+ reserved.getPickupFullName()+" </td></tr>"      
-           +" <tr> <td colspan='5'>    Contact: email@email.com </td></tr>"
-           +" <tr> <td>   Product Name </td>        <td> COST </td>   <td> QUANTITY</td> <td> AMOUNT      </td></tr>"
-           +" <tr> <td>   14’ Aluminium Boat </td>        <td> $130    </td>   <td>   1     </td> <td>  $130          </td></tr> "
-           +" <tr> <td colspan='2'> </td>                         <td> Subtotal   </td>   <td> $130          </td></tr>"            
-           +" <tr> <td colspan='2'>  </td>                        <td> VAT rate (%)</td>  <td>         5%  </td></tr>"
-           +" <tr> <td colspan='2'>   </td>                       <td> VAT          </td> <td> $6.5          </td></tr>  "      
-           +" <tr> <td colspan='2'>   </td>                        <td> Total        </td> <td> $ 136.5         </td></tr>"
-           +" </table></body></html>";           
+    private void sendEmail(String recipientEmail, Reservation reserved, String code)
+            throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
 
-    helper.setSubject(subject);
-     
-    helper.setText(content, true);
-     
-    mailSender.send(message);
+        helper.setFrom("sportsrentReset@gmail.com", "Sportrent Support");
+
+        helper.setTo(recipientEmail);
+
+        String subject = "Reservation confirmation email";
+
+        String content = " <p>RESERVATION CONFIRMATION </p>"
+                + "<html><body>"
+                + " <table style='border:2px solid black width:100%'>"
+                + "<tr style =bgcolor:#33CC99>"
+                + "     <td colspan='3'>   Reservation Code:   " + code
+                + " </td>            <td colspan='2'><h3>Sports Rent</h3><td></tr>"
+                + "<tr> <td colspan='3'>   Reservation Date:    " + reserved.getStartDate()
+                + "         <td colspan='2'>" + reserved.getAddress() + " </td></tr>"
+                + "<tr> <td colspan='3'>                                           <td colspan='2'>12345 Your City </td></tr>"
+                + "<tr> <td colspan='3'>   Reservation Detail                      <td colspan='2'> COUNTRY </td></tr>"
+                + "<tr> <td colspan='3'>  Pickup:  </td> <td colspan='2'>   " + reserved.getStartDate() + " </td></tr>"
+                + " <tr> <td colspan='3'>  Return:  </td> <td colspan='2'>  " + reserved.getEndDate()
+                + "  </td></tr><br><br>"
+                + "<tr> <td colspan='5'>    Reserved :<td></tr>"
+                + " <tr> <td colspan='5'>    Name:   " + reserved.getPickupFullName() + " </td></tr>"
+                + " <tr> <td colspan='5'>    Contact: email@email.com </td></tr>"
+                + " <tr> <td>   Product Name </td>        <td> COST </td>   <td> QUANTITY</td> <td> AMOUNT      </td></tr>"
+                + " <tr> <td>   14’ Aluminium Boat </td>        <td> $130    </td>   <td>   1     </td> <td>  $130          </td></tr> "
+                + " <tr> <td colspan='2'> </td>                         <td> Subtotal   </td>   <td> $130          </td></tr>"
+                + " <tr> <td colspan='2'>  </td>                        <td> VAT rate (%)</td>  <td>         5%  </td></tr>"
+                + " <tr> <td colspan='2'>   </td>                       <td> VAT          </td> <td> $6.5          </td></tr>  "
+                + " <tr> <td colspan='2'>   </td>                        <td> Total        </td> <td> $ 136.5         </td></tr>"
+                + " </table></body></html>";
+
+        helper.setSubject(subject);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
     }
 
 }
